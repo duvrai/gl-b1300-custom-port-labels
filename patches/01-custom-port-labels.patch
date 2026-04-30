@@ -1,0 +1,62 @@
+From 1a7b798507ef0d11f3aacabc58af0c26c3c39dd3 Mon Sep 17 00:00:00 2001
+From: Thomas <thomas@Mac.localdomain>
+Date: Thu, 30 Apr 2026 10:01:57 +0200
+Subject: [PATCH] gl-b1300: custom port labels + default WAN mapping
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+- Rename ports: lan2 → gigabit1 (WAN), lan1 → gigabit2, wan → gigabit3-poe
+- Update first-boot network config so gigabit1 is WAN by default
+- Useful for PoE use-cases and clearer labeling
+---
+ target/linux/ipq40xx/base-files/etc/board.d/02_network       | 2 +-
+ .../arch/arm/boot/dts/qcom/qcom-ipq4029-gl-b1300.dts         | 5 +++--
+ 2 files changed, 4 insertions(+), 3 deletions(-)
+
+diff --git a/target/linux/ipq40xx/base-files/etc/board.d/02_network b/target/linux/ipq40xx/base-files/etc/board.d/02_network
+index cca50e621f..c88acc5552 100644
+--- a/target/linux/ipq40xx/base-files/etc/board.d/02_network
++++ b/target/linux/ipq40xx/base-files/etc/board.d/02_network
+@@ -99,7 +99,7 @@ ipq40xx_setup_interfaces()
+ 	glinet,gl-b1300|\
+ 	glinet,gl-s1300|\
+ 	mobipromo,cm520-79f)
+-		ucidef_set_interfaces_lan_wan "lan1 lan2" "wan"
++		ucidef_set_interfaces_lan_wan "gigabit2 gigabit3-poe" "gigabit1"
+ 		;;
+ 	meraki,gx20|\
+ 	meraki,z3)
+diff --git a/target/linux/ipq40xx/files-6.12/arch/arm/boot/dts/qcom/qcom-ipq4029-gl-b1300.dts b/target/linux/ipq40xx/files-6.12/arch/arm/boot/dts/qcom/qcom-ipq4029-gl-b1300.dts
+index 3f687f4de6..f24a636ae7 100644
+--- a/target/linux/ipq40xx/files-6.12/arch/arm/boot/dts/qcom/qcom-ipq4029-gl-b1300.dts
++++ b/target/linux/ipq40xx/files-6.12/arch/arm/boot/dts/qcom/qcom-ipq4029-gl-b1300.dts
+@@ -296,7 +296,7 @@
+ &swport3 {
+ 	status = "okay";
+ 
+-	label = "lan2";
++	label = "gigabit1";
+ 	nvmem-cell-names = "mac-address";
+ 	nvmem-cells = <&macaddr_gmac0 2>;
+ };
+@@ -304,7 +304,7 @@
+ &swport4 {
+ 	status = "okay";
+ 
+-	label = "lan1";
++	label = "gigabit2";
+ 	nvmem-cell-names = "mac-address";
+ 	nvmem-cells = <&macaddr_gmac0 0>;
+ };
+@@ -312,6 +312,7 @@
+ &swport5 {
+ 	status = "okay";
+ 
++	label = "gigabit3-poe";
+ 	nvmem-cell-names = "mac-address";
+ 	nvmem-cells = <&macaddr_gmac1>;
+ };
+-- 
+2.50.1 (Apple Git-155)
+
